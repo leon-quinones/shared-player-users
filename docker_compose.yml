@@ -1,0 +1,43 @@
+services:
+  sp-main-database:
+    image: mongodb/mongodb-community-server:9.0-ubi8-slim
+    container_name: shared-player-main-database
+    restart: always
+    volumes:
+      - mongodb:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DBUSER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DBPASS}
+      MONGO_INITDB_DATABASE: shared_player
+    networks:
+      - database
+
+
+  sp-users:
+    image: shared-player-users:0.1.0
+    container_name: shared-player-users
+    restart: always
+    depends_on:
+      - sp-main-database
+    ports:
+      -  "8100:8080"
+    networks:
+      -  shared-player-users
+      -  database
+    environment:
+      DBUSER: ${DBUSER}
+      DBPASS: ${DBPASS}
+      DBHOST: sp-main-database
+      DBPORT: 27017
+
+volumes:
+  mongodb:
+    external: false
+
+networks:
+  shared-player-users:
+    driver: bridge
+  database:
+    driver: bridge
+    internal: true
+
