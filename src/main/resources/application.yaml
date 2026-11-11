@@ -3,6 +3,12 @@ ktor:
     port: 8080
   application:
     modules:
-      - com.example.SerializationKt.configureSerialization
-      - com.example.MongoKt.configureMongo
-      - com.example.RoutingKt.configureRouting
+      - com.example.ApplicationKt.module
+
+database:
+  user: ${DBUSER}
+  password: ${DBPASS}
+  host: ${DBHOST}
+  port: ${DBPORT}
+  maxPoolSize: 24
+  name: shared_player

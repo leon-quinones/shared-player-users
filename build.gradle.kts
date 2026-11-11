@@ -24,7 +24,21 @@ dependencies {
     implementation(libs.mongodb.bson)
     implementation(libs.mongodb.driverCore)
     implementation(libs.mongodb.driverSync)
+    implementation(ktorLibs.server.di)
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)
+}
+
+tasks.test {
+    exclude("**/UserApiEndToEndTest.class")
+}
+
+tasks.register<Test>("e2eTest") {
+    group = "verification"
+    description = "Verifies the user API over HTTP against a running MongoDB instance."
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    include("**/UserApiEndToEndTest.class")
+    outputs.upToDateWhen { false }
 }
