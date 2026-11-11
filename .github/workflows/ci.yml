@@ -1,0 +1,41 @@
+name: build-test-project
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read # este permiso de github lo usamos para leer el repositorio
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # runner oficial de Github
+    steps:
+      - name: copy data from repo
+        uses: actions/checkout@v6 # action para copiar repo al runner
+
+      - name: setup jdk
+        uses: actions/setup-java@v6
+        with:
+          distribution: microsoft # usamos el openjdk de microsoft para compatibilidad con imágenes docker base de azure
+          java-version: '21'
+
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: grant access
+        run: chmod +x ./gradlew # wrapper para usar la misma versión de gradle configurada en el repo
+
+      - name: build
+        run: ./gradlew assemble --no-daemon
+
+      - name: unit testing
+        run: ./gradlew test --no-daemon
+
+
+
+
