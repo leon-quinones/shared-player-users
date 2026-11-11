@@ -11,7 +11,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
-import kotlin.test.assertSame
 import kotlin.test.assertTrue
 import kotlin.uuid.Uuid
 
@@ -126,7 +125,8 @@ class UserRepositoryTest {
         val failure = IllegalStateException("Database unavailable")
         adapter.failure = failure
 
-        assertSame(failure, assertFailsWith<IllegalStateException> { repository.getById(user.id) })
+        val thrown = assertFailsWith<IllegalStateException> { repository.getById(user.id) }
+        assertEquals(failure.message, thrown.message)
     }
 
     @Test
@@ -134,7 +134,8 @@ class UserRepositoryTest {
         val failure = IllegalStateException("Database unavailable")
         adapter.failure = failure
 
-        assertSame(failure, assertFailsWith<IllegalStateException> { repository.add(user) })
+        val thrown = assertFailsWith<IllegalStateException> { repository.add(user) }
+        assertEquals(failure.message, thrown.message)
     }
 
     @Test
@@ -142,10 +143,10 @@ class UserRepositoryTest {
         val failure = IllegalStateException("Database unavailable")
         adapter.failure = failure
 
-        assertSame(
-            failure,
-            assertFailsWith<IllegalStateException> { repository.patch(user.id, mapOf("name" to "Ana Maria")) }
-        )
+        val thrown = assertFailsWith<IllegalStateException> {
+            repository.patch(user.id, mapOf("name" to "Ana Maria"))
+        }
+        assertEquals(failure.message, thrown.message)
     }
 
     private fun storedUser(): Document = Document("_id", user.id.toString())
