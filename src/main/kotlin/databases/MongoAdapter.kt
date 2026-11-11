@@ -40,7 +40,7 @@ class MongoAdapter<T: Any>(
         }
     }
 
-    fun patch(id: String, changes: Bson): T? =
+    override suspend fun patch(id: String, changes: Bson): T? =
         collection.findOneAndUpdate(
             Filters.eq("_id", id),
             changes,

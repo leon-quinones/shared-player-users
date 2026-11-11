@@ -1,6 +1,6 @@
 package com.example.repositories
 
-import com.example.databases.MongoAdapter
+import com.example.databases.BaseAdapter
 import com.example.interfaces.BaseRepository
 import com.example.model.User
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import org.bson.Document
 import kotlin.uuid.Uuid
 
-class UserRepository(private val adapter: MongoAdapter<Document>) : BaseRepository<User> {
+class UserRepository(private val adapter: BaseAdapter<Document>) : BaseRepository<User> {
     override suspend fun getById(id: Uuid): User? = withContext(Dispatchers.IO) {
         adapter.findById(id.toString())?.toUser()
     }
