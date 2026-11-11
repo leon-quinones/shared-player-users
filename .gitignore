@@ -19,6 +19,24 @@
 *.tar.gz
 *.rar
 
+# Keep the Gradle wrapper available in fresh checkouts
+!gradle/wrapper/gradle-wrapper.jar
+
+# Gradle caches and generated build output
+.gradle/
+build/
+out/
+
+# IDE project files and local settings
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+*.iml
+*.ipr
+*.iws
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
